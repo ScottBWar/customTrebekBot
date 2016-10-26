@@ -361,8 +361,8 @@ def respond_with_leaderboard
       user_id = leader[:user_id]
       name = get_slack_name(leader[:user_id], { :use_real_name => true })
       puts name
-      if name == 'Bob Rudderow' || name == 'Thom Rouse' || name == 'Matt Kraft' || name == 'Victor Tafro'
-        score -= 1
+      if name == 'Scott Warner'
+        score += 1
       end
       score = currency_format(get_user_score(user_id))
       leaders << "#{i + 1}. #{name}: #{score}"
