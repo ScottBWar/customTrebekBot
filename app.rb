@@ -184,7 +184,7 @@ def process_answer(params)
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
       #
-       elsif get_slack_name(user_id) == 'Nancy' || get_slack_name(user_id) == 'Rob'|| get_slack_name(user_id) == 'Victor'
+       elsif get_slack_name(user_id) == 'Nancy' || get_slack_name(user_id) == 'Rob'|| get_slack_name(user_id) == 'none'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect. Get it together #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
