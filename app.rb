@@ -162,17 +162,33 @@ def process_answer(params)
       end
       mark_question_as_answered(params[:channel_id])
     elsif is_question_format?(user_answer) && is_correct_answer?(current_answer, user_answer)
-      score = update_score(user_id, current_question["value"])
-      reply = "That is correct, #{get_slack_name(user_id)}. Your total score is #{currency_format(score)}."
-      mark_question_as_answered(params[:channel_id])
+      #
+      if get_slack_name(user_id) == 'John'
+         score = update_score(user_id, current_question["value"])
+         reply = "That is correct, #{get_slack_name(user_id)}. But did you Google that, you cheater? Your current score is #{currency_format(score)}."
+         mark_question_as_answered(params[:channel_id])
+      #
+      else
+        score = update_score(user_id, current_question["value"])
+        reply = "That is correct, #{get_slack_name(user_id)}. Your total score is #{currency_format(score)}."
+        mark_question_as_answered(params[:channel_id])
+      end
     elsif is_correct_answer?(current_answer, user_answer)
       score = update_score(user_id, (current_question["value"] * -1))
       reply = "That is correct, #{get_slack_name(user_id)}, but responses have to be in the form of a question. Your total score is #{currency_format(score)}."
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
+      #
+      if get_slack_name(user_id) == 'Matt'
+         score = update_score(user_id, (current_question["value"] * -1))
+         reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
+         $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
+      #
+      else
       score = update_score(user_id, (current_question["value"] * -1))
       reply = "That is incorrect, #{get_slack_name(user_id)}. Your score is now #{currency_format(score)}."
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
+      end
     end
   end
   reply
