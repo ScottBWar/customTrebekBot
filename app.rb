@@ -360,10 +360,6 @@ def respond_with_leaderboard
     get_score_leaders.each_with_index do |leader, i|
       user_id = leader[:user_id]
       name = get_slack_name(leader[:user_id], { :use_real_name => true })
-      puts name
-      if name == 'Scott Warner'
-        score += 1
-      end
       score = currency_format(get_user_score(user_id))
       leaders << "#{i + 1}. #{name}: #{score}"
     end
