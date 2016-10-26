@@ -162,14 +162,8 @@ def process_answer(params)
       end
       mark_question_as_answered(params[:channel_id])
     elsif is_question_format?(user_answer) && is_correct_answer?(current_answer, user_answer)
-      #
-      if get_slack_name(user_id) == 'John'
-         score = update_score(user_id, current_question["value"])
-         reply = "That is correct, #{get_slack_name(user_id)}. But did you Google that, you cheater? Your current score is #{currency_format(score)}."
-         mark_question_as_answered(params[:channel_id])
-      #
        #
-      elsif get_slack_name(user_id) == 'Thom'
+      if get_slack_name(user_id) == 'Thom' || get_slack_name(user_id) == 'John'
          score = update_score(user_id, current_question["value"])
          reply = "#{get_slack_name(user_id)}, you are correct. And your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
@@ -185,7 +179,7 @@ def process_answer(params)
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
       #
-      if get_slack_name(user_id) == 'Matt' || get_slack_name(user_id) == 'Bob'
+      if get_slack_name(user_id) == 'Rob' || get_slack_name(user_id) == 'Bob'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
@@ -195,7 +189,7 @@ def process_answer(params)
          reply = "That is incorrect. Get it together #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
       #
-       elsif get_slack_name(user_id) == 'Thom'
+       elsif get_slack_name(user_id) == 'Thom' || get_slack_name(user_id) == 'Matt'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "Seriously #{get_slack_name(user_id)}? Your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
