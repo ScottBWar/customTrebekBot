@@ -168,6 +168,12 @@ def process_answer(params)
          reply = "That is correct, #{get_slack_name(user_id)}. But did you Google that, you cheater? Your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
       #
+       #
+      elsif get_slack_name(user_id) == 'Thom'
+         score = update_score(user_id, current_question["value"])
+         reply = "#{get_slack_name(user_id)} you are correct. Of course you would fucking know that one. Your current score is #{currency_format(score)}."
+         mark_question_as_answered(params[:channel_id])
+      #
       else
         score = update_score(user_id, current_question["value"])
         reply = "That is correct, #{get_slack_name(user_id)}. Your total score is #{currency_format(score)}."
@@ -179,7 +185,7 @@ def process_answer(params)
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
       #
-      if get_slack_name(user_id) == 'Matt'
+      if get_slack_name(user_id) == 'Matt' || get_slack_name(user_id) == 'Bob' || get_slack_name(user_id) == 'Rob'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
@@ -350,6 +356,10 @@ def respond_with_leaderboard
     get_score_leaders.each_with_index do |leader, i|
       user_id = leader[:user_id]
       name = get_slack_name(leader[:user_id], { :use_real_name => true })
+      puts name
+      if name == 'Bob Rudderow' || name == 'Thom Rouse' || name == 'Matt Kraft' || name == 'Victor Tafro'
+        score -= 1
+      end
       score = currency_format(get_user_score(user_id))
       leaders << "#{i + 1}. #{name}: #{score}"
     end
