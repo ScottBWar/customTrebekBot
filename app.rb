@@ -171,7 +171,7 @@ def process_answer(params)
        #
       elsif get_slack_name(user_id) == 'Thom'
          score = update_score(user_id, current_question["value"])
-         reply = "#{get_slack_name(user_id)} you are correct. Of course you would fucking know that one. Your current score is #{currency_format(score)}."
+         reply = "#{get_slack_name(user_id)}, you are correct. And your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
       #
       else
@@ -185,9 +185,14 @@ def process_answer(params)
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
       #
-      if get_slack_name(user_id) == 'Matt' || get_slack_name(user_id) == 'Bob' || get_slack_name(user_id) == 'Rob'
+      if get_slack_name(user_id) == 'Matt' || get_slack_name(user_id) == 'Bob'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
+         $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
+      #
+       elsif get_slack_name(user_id) == 'John' || get_slack_name(user_id) == 'Rob'|| get_slack_name(user_id) == 'Victor'
+         score = update_score(user_id, (current_question["value"] * -1))
+         reply = "That is incorrect. Get it together #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
       #
       else
@@ -448,7 +453,7 @@ def trebek_me
     "Great. Better luck to all of you in the next round. It's time for Slack Jeopardy. Let's take a look at the board. And the categories are: `Potent Potables`, `The Vowels`, `Presidents Who Are On the One Dollar Bill`, `Famous Titles`, `Ponies`, `The Number 10`, and finally: `Foods That End In \"Amburger\"`.",
     "Let's take a look at the board. The categories are: `Potent Potables`, `The Pen is Mightier` -- that category is all about quotes from famous authors, so you'll all probably be more comfortable with our next category -- `Shiny Objects`, continuing with `Opposites`, `Things you Shouldn't Put in Your Mouth`, `What Time is It?`, and, finally, `Months That Start With Feb`.",
     "/giphy Turd Ferguson",
-    '/giphy calm down #{get_slack_name(user_id)}'
+    '/giphy #echo calm down #{get_slack_name(user_id)}'
   ].sample
 end
 
