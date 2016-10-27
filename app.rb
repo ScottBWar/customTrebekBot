@@ -163,7 +163,7 @@ def process_answer(params)
       mark_question_as_answered(params[:channel_id])
     elsif is_question_format?(user_answer) && is_correct_answer?(current_answer, user_answer)
        #
-      if get_slack_name(user_id) == 'Thom' || get_slack_name(user_id) == 'John'|| get_slack_name(user_id) == 'Rob'
+      if rand(1..10) == 5 || rand(1..10) == 4
          score = update_score(user_id, current_question["value"])
          reply = "#{get_slack_name(user_id)}, you are correct. And your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
@@ -179,7 +179,7 @@ def process_answer(params)
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
       #
-      if get_slack_name(user_id) == 'None'
+      if rand(1..10) == 5
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
