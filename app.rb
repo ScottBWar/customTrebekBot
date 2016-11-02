@@ -168,6 +168,12 @@ def process_answer(params)
          reply = "#{get_slack_name(user_id)}, you are correct. And your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
       #
+       #
+      elsif get_slack_name(user_id) == 'John' || rand(1..10) > 3
+         score = update_score(user_id, current_question["value"])
+         reply = "#{get_slack_name(user_id)}, you are correct... But did you Google that before you answered? Your current score is #{currency_format(score)}."
+         mark_question_as_answered(params[:channel_id])
+      #
       else
         score = update_score(user_id, current_question["value"])
         reply = "That is correct, #{get_slack_name(user_id)}. Your total score is #{currency_format(score)}."
@@ -184,7 +190,7 @@ def process_answer(params)
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
       #
-       elsif get_slack_name(user_id) == 'Nancy' || get_slack_name(user_id) == 'Rob'|| get_slack_name(user_id) == 'none'
+       elsif get_slack_name(user_id) == 'Nancy' || get_slack_name(user_id) == 'none'
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect. Get it together #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
