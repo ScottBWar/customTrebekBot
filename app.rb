@@ -169,7 +169,7 @@ def process_answer(params)
          mark_question_as_answered(params[:channel_id])
       #
        #
-      elsif get_slack_name(user_id) == 'John' || rand(1..10) > 9
+      elsif get_slack_name(user_id) == 'W'
          score = update_score(user_id, current_question["value"])
          reply = "#{get_slack_name(user_id)}, you are correct... But did you Google that before you answered? Your current score is #{currency_format(score)}."
          mark_question_as_answered(params[:channel_id])
