@@ -185,7 +185,7 @@ def process_answer(params)
       $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
     else
       #
-      if rand(1..10) == 5
+      if rand(1..10) == 99
          score = update_score(user_id, (current_question["value"] * -1))
          reply = "That is incorrect, you dirty rat fuck. #{get_slack_name(user_id)}, your score is now #{currency_format(score)}."
          $redis.setex(answered_key, ENV["SECONDS_TO_ANSWER"], "true")
